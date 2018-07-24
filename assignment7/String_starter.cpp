@@ -1,8 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
-#include <cstring>
-#include <string.h>
 
 using namespace std;
 
@@ -13,25 +11,24 @@ private:
 public:
 	String()
 	{
-		pstr[101];							// allocate 101 characters and initialize pstr
-		strcpy(pstr, nullptr);							// Set the first character in the array to the null terminating character
+		this->pstr[101];
+		//strcpy(pstr, '\0');
 	}
 
 	String(const char* s)
 	{
-		string pstr[101]; // allocate 101 characters and initialize pstr
-		*pstr = s; // copy the characters from s into pstr
+		char pstr[101];
+		strncpy(pstr, s, 101);
 	}
 
 	~String()
 	{
-		//delete[] pstr;							// deallocate the memory for the character array
-		memset(pstr, 0x00, sizeof pstr);
+		delete[] pstr;
 	}
 
 	int length() const
 	{
-		for (int i = 0; i < 100; i++)	// loop through array and keep count
+		for (int i = 0; i < sizeof pstr; i++)
 		{
 			pstr[i] = 0;
 		}
@@ -40,26 +37,26 @@ public:
 
 	bool operator == (const String& s)
 	{
-		if (this == &s)							// loop and compare characters in each array by passing a String as the arg
+		if (this == &s)
 		{
 			return true;
 		}
-		for (int j = 0; j < 100; j++)
+		
 		{
-			if (pstr[j] != s.pstr[j])
-
-				return false;
+			return false;
 		}
 	}
 
 	bool operator == (const char* ps)
 	{
-		if (pstr == ps) {						// loop and compare characters in each array by passing a char* as the arg
+		if (pstr == ps) {
 			return true;
 		}
-		else
+		for (int j = 0; j < sizeof pstr; j++)
 		{
-			return false;
+			if (pstr[j] != ps[j])
+
+				return false;
 		}
 	}
 
@@ -75,7 +72,7 @@ public:
 
 	operator char* ()							// conversion operator
 	{
-		return nullptr;							// return a pointer to the characters
+		return pstr;							// return a pointer to the characters
 	}
 };
 
